@@ -12,6 +12,12 @@ This is a demo **Ansible** project showing the basics of setting up a multi-serv
 - HA-Proxy v1.4.24
 - Apache v2.4
 - PHP v5.5
+- Composer
+- NodeJS + NPM
+    + Grunt
+    + Gulp
+    + Bower
+    + Node Sass
 - MySQL v5.5
 
 ### Boxes
