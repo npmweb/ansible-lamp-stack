@@ -1,0 +1,14 @@
+---
+- hosts: web
+  sudo: true
+  vars:
+      sites:
+        - domain: "ansible-site.dev"
+          document_root: "/var/www/ansible-site.dev/public"
+          aliases:
+            - url_path: "/images"
+              file_path: "/images"
+  roles:
+    - webserver
+    - composer
+    - nodejs

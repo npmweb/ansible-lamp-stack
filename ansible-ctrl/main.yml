@@ -1,0 +1,13 @@
+---
+# Main Playbook
+#
+# Update apt cache
+- include: apt-update.yml
+# Create Admin and Deploy users
+- include: users.yml
+# Setup Loadbalancer(s) with HAProxy | Admin on port 1234 admin:admin
+- include: haproxy.yml
+# Setup Webserver(s) with Apache|PHP|Composer|NodeJS
+- include: webservers.yml
+# Setup DB Server(s) with MySQL
+- include: dbservers.yml

@@ -1,0 +1,17 @@
+<VirtualHost *:80>
+  ServerAdmin webmaster@localhost
+  DocumentRoot {{ item.document_root }}
+
+  {% if item.aliases %}
+  {% for alias in item.aliases %}
+  Alias {{ alias.url_path}} {{ alias.file_path }}
+  {% endfor %}
+  {% endif %}
+
+  <Directory {{ item.document_root }}>
+    Require all granted
+  </Directory>
+
+  ErrorLog ${APACHE_LOG_DIR}/{{ item.domain }}-error.log
+  CustomLog ${APACHE_LOG_DIR}/access.log combined
+</VirtualHost>

@@ -1,0 +1,49 @@
+---
+- name: Install Apache
+  apt: name=apache2 state=present
+
+- name: Copy over new virtual host(s)
+  with_items: sites
+  template:
+    src=virtual-host.conf.j2
+    dest=/etc/apache2/sites-available/{{ item.domain }}.conf
+  notify:
+    - reload apache
+
+- name: Create Document Root Dirs
+  with_items: sites
+  file: path={{ item.document_root }} state=directory owner=deploy group=deploy mode=0755
+
+- name: Create index.html in Document Root Dirs
+  with_items: sites
+  template:
+    src=index.html.j2
+    dest={{ item.document_root }}/index.html
+    owner=deploy
+    group=deploy
+    mode=0644
+
+- name: Create PHP Info in Document Root Dirs
+  with_items: sites
+  template:
+    src=info.php.j2
+    dest={{ item.document_root }}/info.php
+    owner=deploy
+    group=deploy
+    mode=0644
+
+- name: Remove default virtual host
+  file:
+    path=/etc/apache2/sites-enabled/000-default.conf
+    state=absent
+  notify:
+    - reload apache
+
+- name: Enable new virtual host(s)
+  with_items: sites
+  file:
+    src=/etc/apache2/sites-available/{{ item.domain }}.conf
+    dest=/etc/apache2/sites-enabled/{{ item.domain }}.conf
+    state=link
+  notify:
+    - reload apache

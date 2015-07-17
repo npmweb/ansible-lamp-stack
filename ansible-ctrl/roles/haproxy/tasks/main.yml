@@ -1,0 +1,26 @@
+---
+# tasks file for ansible-haproxy-role
+- name: Include OS-specific variables.
+  include_vars: "{{ ansible_os_family }}.yml"
+
+- include: RedHat.yml
+  when: ansible_os_family == 'RedHat'
+
+- include: Debian.yml
+  when: ansible_os_family == 'Debian'
+
+- name: start haproxy
+  service: name=haproxy state=running
+  tags:
+   - haproxy_service
+
+- name: enable haproxy
+  copy: src='default.cfg' dest='/etc/default/haproxy'
+  tags:
+   - haproxy_install
+
+- name: configure haproxy
+  template: src=main.cfg dest=/etc/haproxy/haproxy.cfg
+  notify: reload haproxy
+  tags:
+   - haproxy_configure

@@ -1,0 +1,21 @@
+---
+- name: Add NodeSource PPA for latest version of Node.js.
+  apt_repository: repo='ppa:chris-lea/node.js'
+
+- name: Update apt cache if needed.
+  apt: update_cache=yes cache_valid_time=86400
+
+- name: Ensure Node.js and npm are installed.
+  apt: name=nodejs state=present
+
+- name: Install Node Sass
+  npm: name=node-sass global=yes state=present
+
+- name: Install Grunt
+  npm: name=grunt-cli global=yes state=present
+
+- name: Install Gulp
+  npm: name=gulp global=yes state=present
+
+- name: Install Bower
+  npm: name=bower global=yes state=present

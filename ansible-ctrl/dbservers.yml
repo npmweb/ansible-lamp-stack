@@ -1,0 +1,11 @@
+---
+- hosts: db
+  sudo: true
+  vars:
+      sites:
+        - db_name: "ansible_site"
+          db_host: "localhost"
+          db_username: "ansible_site"
+          db_password: "ansible_site"
+  roles:
+    - database

@@ -1,0 +1,21 @@
+---
+- name: Install mysql
+  apt: name=mysql-server state=present
+
+- name: Install python mysql pkg - req for creating dbs
+  apt: name=python-mysqldb state=present
+
+- name: Create DBs
+  mysql_db:
+    name: "{{ item.db_name }}"
+    state: present
+  with_items: sites
+
+- name: Add DB Users
+  mysql_user:
+    name: "{{ item.db_username }}"
+    host: "{{ item.db_host | default('localhost') }}"
+    password: "{{ item.db_password }}"
+    priv: "{{ item.db_name }}.*:ALL"
+    state: present
+  with_items: sites
